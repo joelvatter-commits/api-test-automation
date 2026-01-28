@@ -1,0 +1,35 @@
+name: Run API Tests
+
+# Milloin robotti herää? (Aina kun koodia työnnetään main-haaraan)
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-api:
+    # Missä käyttöjärjestelmässä testit ajetaan?
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Hakee koodisi GitHubista
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Asentaa Pythonin
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    # 3. Asentaa kirjastot (requests, pytest)
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 4. Ajaa testit ja tekee raportin
+    - name: Run Tests
+      run: |
+        pytest -v

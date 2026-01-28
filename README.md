@@ -5,6 +5,8 @@ This repository contains an automated testing framework built with **Python** an
 
 Currently, the tests run against the [JSONPlaceholder](https://jsonplaceholder.typicode.com/) API to simulate real-world usage without triggering bot protections.
 
+[![Run API Tests](https://github.com/joelvatter-commits/api-test-automation/actions/workflows/main.yml/badge.svg)](https://github.com/joelvatter-commits/api-test-automation/actions/workflows/main.yml)
+
 ## Tech Stack
 * **Language:** Python 3.x
 * **Libraries:**

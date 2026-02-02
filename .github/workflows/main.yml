@@ -1,4 +1,4 @@
-name: Run API Tests
+  name: Run API Tests
 
 # Milloin robotti herää? (Aina kun koodia työnnetään main-haaraan)
 on:
@@ -33,7 +33,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Ajaa testit ja tekee raportin
+    # 4. Ajaa testit ja luo raportin (Huom: --self-contained-html tekee siitä yhden siistin tiedoston)
     - name: Run Tests
       run: |
-        pytest -v
+        pytest -v --html=report.html --self-contained-html
+
+    # 5. UUSI VAIHE: Tallentaa raportin GitHubiin ladattavaksi
+    - name: Upload Test Report
+      uses: actions/upload-artifact@v4
+      if: always()  # Tärkeä! Tallentaa raportin vaikka testit epäonnistuisivat
+      with:
+        name: test-report
+        path: report.html

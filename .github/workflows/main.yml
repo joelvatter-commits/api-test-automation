@@ -1,47 +1,38 @@
-  name: Run API Tests
+name: Run API Tests
 
-# Milloin robotti herää? (Aina kun koodia työnnetään main-haaraan)
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  # TÄMÄ ON UUSI OSA:
   schedule:
-    # Aja joka päivä klo 08:00 UTC (n. klo 10-11 Suomen aikaa)
     - cron: '0 8 * * *'
 
 jobs:
   test-api:
-    # Missä käyttöjärjestelmässä testit ajetaan?
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Hakee koodisi GitHubista
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    # 2. Asentaa Pythonin
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    # 3. Asentaa kirjastot (requests, pytest)
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Ajaa testit ja luo raportin (Huom: --self-contained-html tekee siitä yhden siistin tiedoston)
     - name: Run Tests
       run: |
         pytest -v --html=report.html --self-contained-html
 
-    # 5. UUSI VAIHE: Tallentaa raportin GitHubiin ladattavaksi
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
-      if: always()  # Tärkeä! Tallentaa raportin vaikka testit epäonnistuisivat
+      if: always()
       with:
         name: test-report
         path: report.html
